@@ -5,8 +5,9 @@ PROJECT(Teamup CXX)
     SET(CMAKE_CXX_STANDARD_REQUIRED ON)
     ENABLE_TESTING()
 
-    ADD_EXECUTABLE(Teamup teamup/main/main.cpp)
+    ADD_EXECUTABLE(Teamup modules/teamup/main/main.cpp)
 
-    ADD_EXECUTABLE(TeamupTest teamup/test/test.cpp)
+    ADD_EXECUTABLE(TeamupTest global/bandit/main.cpp
+        modules/teamup/test/test.cpp)
     TARGET_INCLUDE_DIRECTORIES(TeamupTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/bandit)
     ADD_TEST(NAME Teamup COMMAND TeamupTest)
