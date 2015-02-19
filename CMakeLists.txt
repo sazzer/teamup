@@ -12,6 +12,7 @@ PROJECT(Teamup CXX)
     # Set up any library dependencies that we are going to need
     #------------------------------------------------------------------------------
     FIND_PACKAGE(PkgConfig)
+    FIND_PACKAGE(Curses)
 
     #------------------------------------------------------------------------------
     # The library that is the majority of the code
@@ -20,6 +21,8 @@ PROJECT(Teamup CXX)
         modules/teamup/main/ui/curses/ui.cpp)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/teamup/main)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/easyloggingpp/src)
+    TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CURSES_INCLUDE_DIRS})
+    TARGET_LINK_LIBRARIES(TeamupLib ${CURSES_LIBRARIES})
 
     #------------------------------------------------------------------------------
     # The executable that ties it all together
