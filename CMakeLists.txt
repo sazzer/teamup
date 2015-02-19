@@ -5,7 +5,10 @@ PROJECT(Teamup CXX)
     SET(CMAKE_CXX_STANDARD_REQUIRED ON)
     ENABLE_TESTING()
 
+    ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp)
+
     ADD_EXECUTABLE(Teamup modules/teamup/main/main.cpp)
+    TARGET_LINK_LIBRARIES(Teamup TeamupLib)
 
     ADD_EXECUTABLE(TeamupTest global/bandit/main.cpp
         modules/teamup/test/test.cpp)
