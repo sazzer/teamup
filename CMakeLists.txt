@@ -6,8 +6,10 @@ PROJECT(Teamup CXX)
     ENABLE_TESTING()
 
     ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp)
+    TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/easyloggingpp/src)
 
     ADD_EXECUTABLE(Teamup modules/teamup/main/main.cpp)
+    TARGET_INCLUDE_DIRECTORIES(Teamup PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/easyloggingpp/src)
     TARGET_LINK_LIBRARIES(Teamup TeamupLib)
 
     ADD_EXECUTABLE(TeamupTest global/bandit/main.cpp
