@@ -1,12 +1,12 @@
 #include "entry.h"
+#include "ui/ui.h"
 #include <iostream>
 #include <easylogging++.h>
 
 namespace Teamup {
     void entry(const std::vector<std::string>& params) {
-        LOG(INFO) << "Hello, World!";
-        for (auto p : params) {
-            LOG(INFO) << "Param: " << p;
-        }
+        LOG(INFO) << "Starting...";
+        UI::start();
+        LOG(INFO) << "Finishing...";
     }
 }
