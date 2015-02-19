@@ -7,5 +7,5 @@ namespace Teamup {
      * that links against that library and has a main method
      * @param params The parameters to the executable
      */
-    void entry(const std::vector<const std::string>& params);
+    void entry(const std::vector<std::string>& params);
 }

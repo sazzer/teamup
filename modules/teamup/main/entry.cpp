@@ -3,10 +3,10 @@
 #include <easylogging++.h>
 
 namespace Teamup {
-    void entry(const std::vector<const std::string>& params) {
+    void entry(const std::vector<std::string>& params) {
         LOG(INFO) << "Hello, World!";
-        std::for_each(params.begin(), params.end(), [](auto p) {
+        for (auto p : params) {
             LOG(INFO) << "Param: " << p;
-        });
+        }
     }
 }
