@@ -41,3 +41,8 @@ PROJECT(Teamup CXX)
     TARGET_INCLUDE_DIRECTORIES(TeamupTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/teamup/main)
     TARGET_INCLUDE_DIRECTORIES(TeamupTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/bandit)
     ADD_TEST(NAME Teamup COMMAND TeamupTest)
+
+    #------------------------------------------------------------------------------
+    # Copy some files into the build area for running with
+    #------------------------------------------------------------------------------
+    CONFIGURE_FILE(files/dev/logging.conf logging.conf COPYONLY)
