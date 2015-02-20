@@ -21,6 +21,47 @@ namespace Teamup {
                  */
                 ~Window();
                 /**
+                 * Get the X-Ordinate
+                 * @return The X-Ordinate
+                 */
+                unsigned int x() const;
+                /**
+                 * Get the Y-Ordinate
+                 * @return The Y-Ordinate
+                 */
+                unsigned int y() const;
+                /**
+                 * Get the Width
+                 * @return The Width
+                 */
+                unsigned int width() const;
+                /**
+                 * Get the Height
+                 * @return the Height
+                 */
+                unsigned int height() const;
+                /**
+                 * Get the title
+                 * @return the title
+                 */
+                const std::string& title() const;
+                /**
+                 * Get if we are drawing a border or not
+                 * @return true if we will draw a border. False if not
+                 */
+                bool bordered() const;
+
+                /**
+                 * Set the title for the window
+                 * @param value The new title
+                 */
+                void title(const std::string& value);
+                /**
+                 * Set if we should draw a border or not
+                 * @param value Whether we should draw a border or not
+                 */
+                void bordered(bool value);
+                /**
                  * Render the window
                  */
                 void render();

@@ -35,7 +35,11 @@ namespace Teamup {
                         int logsHeight = 10;
                         int statusWidth = 30;
                         Window logs(0, LINES - logsHeight, COLS, logsHeight);
+                        logs.title("Log");
+                        logs.bordered(true);
                         Window status(COLS - statusWidth, 0, statusWidth, LINES - logsHeight);
+                        status.title("Status");
+                        status.bordered(true);
                         Window map(0, 0, COLS - statusWidth, LINES - logsHeight);
 
                         logs.render();
