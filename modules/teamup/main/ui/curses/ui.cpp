@@ -29,9 +29,19 @@ namespace Teamup {
                     }
 
                     clear();
-                    attrset(COLOR_PAIR(5));
-                    mvprintw(1, 1, "Hello, World!");
-                    refresh();
+
+                    WINDOW *logs, *status, *map;
+                    int logsHeight = 10;
+                    int statusWidth = 30;
+                    logs = newwin(logsHeight, COLS, LINES - logsHeight, 0);
+                    status = newwin(LINES - logsHeight, statusWidth, 0, COLS - statusWidth);
+                    map = newwin(LINES - logsHeight, COLS - statusWidth, 0, 0);
+
+                    box(logs, 0, 0);
+                    box(status, 0, 0);
+
+                    wrefresh(logs);
+                    wrefresh(status);
                 }
                 ~CursesUI() {
                     LOG(DEBUG) << "Stopping Curses UI";
@@ -44,7 +54,7 @@ namespace Teamup {
 
         void start() {
             cursesUi.reset(new CursesUI);
-            sleep(5);
+            sleep(1);
         }
     }
 }
