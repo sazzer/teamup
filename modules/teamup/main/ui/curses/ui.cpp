@@ -59,7 +59,7 @@ namespace Teamup {
 
         void start() {
             cursesUi.reset(new Curses::CursesUI);
-            sleep(1);
+            sleep(5);
         }
     }
 }

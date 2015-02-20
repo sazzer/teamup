@@ -65,7 +65,15 @@ namespace Teamup {
                         std::string actualTitle = " " + pImpl->title_ + " ";
                         unsigned int titleWidth = actualTitle.length();
                         unsigned int titleOffset = (pImpl->width_ - titleWidth) / 2;
+
+                        // This is horrible, but it proves a point
+                        if (pImpl->title_ == "Status") {
+                            wattron(pImpl->window_, A_BOLD);
+                            wattron(pImpl->window_, A_UNDERLINE);
+                        }
                         mvwprintw(pImpl->window_, 0, titleOffset, "%s", actualTitle.c_str());
+                        wattroff(pImpl->window_, A_BOLD);
+                        wattroff(pImpl->window_, A_UNDERLINE);
                     }
                 }
                 wnoutrefresh(pImpl->window_);
