@@ -40,6 +40,7 @@ namespace Teamup {
                         Window status(COLS - statusWidth, 0, statusWidth, LINES - logsHeight);
                         status.title("Status");
                         status.bordered(true);
+                        status.focused(true);
                         Window map(0, 0, COLS - statusWidth, LINES - logsHeight);
 
                         logs.render();

@@ -18,6 +18,8 @@ namespace Teamup {
                 std::string title_;
                 /** Whether the window is bordered or not */
                 bool bordered_;
+                /** Whether the window is focused or not */
+                bool focused_;
                 /** The NCurses Window */
                 WINDOW* window_;
             };
@@ -28,6 +30,7 @@ namespace Teamup {
                 pImpl->height_ = height;
                 pImpl->title_ = "";
                 pImpl->bordered_ = false;
+                pImpl->focused_ = false;
                 pImpl->window_ = newwin(height, width, y, x);
             }
             Window::~Window() {
@@ -58,23 +61,28 @@ namespace Teamup {
                 pImpl->bordered_ = value;
             }
 
+            bool Window::focused() const {
+                return pImpl->focused_;
+            }
+            void Window::focused(bool value) {
+                pImpl->focused_ = value;
+            }
             void Window::render() {
+                wattrset(pImpl->window_, 0);
                 if (pImpl->bordered_) {
+                    if (pImpl->focused_) {
+                        wattron(pImpl->window_, A_BOLD);
+                    }
+
                     box(pImpl->window_, 0, 0);
                     if (!pImpl->title_.empty()) {
                         std::string actualTitle = " " + pImpl->title_ + " ";
                         unsigned int titleWidth = actualTitle.length();
                         unsigned int titleOffset = (pImpl->width_ - titleWidth) / 2;
 
-                        // This is horrible, but it proves a point
-                        if (pImpl->title_ == "Status") {
-                            wattron(pImpl->window_, A_BOLD);
-                            wattron(pImpl->window_, A_UNDERLINE);
-                        }
                         mvwprintw(pImpl->window_, 0, titleOffset, "%s", actualTitle.c_str());
-                        wattroff(pImpl->window_, A_BOLD);
-                        wattroff(pImpl->window_, A_UNDERLINE);
                     }
+                    wattroff(pImpl->window_, A_BOLD);
                 }
                 wnoutrefresh(pImpl->window_);
             }

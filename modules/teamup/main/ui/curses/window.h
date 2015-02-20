@@ -61,6 +61,17 @@ namespace Teamup {
                  * @param value Whether we should draw a border or not
                  */
                 void bordered(bool value);
+
+                /**
+                 * Get if the window is the current focus or not
+                 * @return true if the window is focused. False if not
+                 */
+                bool focused() const;
+                /**
+                 * Set if the window is the current focus or not
+                 * @param value true if the window is focused
+                 */
+                void focused(bool value);
                 /**
                  * Render the window
                  */
