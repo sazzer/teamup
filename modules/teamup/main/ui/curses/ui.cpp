@@ -2,6 +2,7 @@
 #include <memory>
 #include <easylogging++.h>
 #include <ncurses.h>
+#include <unistd.h>
 
 namespace Teamup {
     namespace UI {
@@ -10,6 +11,8 @@ namespace Teamup {
                 CursesUI() {
                     LOG(DEBUG) << "Starting Curses UI";
                     initscr();
+                    clear();
+                    refresh();
                 }
                 ~CursesUI() {
                     LOG(DEBUG) << "Stopping Curses UI";
@@ -22,6 +25,7 @@ namespace Teamup {
 
         void start() {
             cursesUi.reset(new CursesUI);
+            sleep(5);
         }
     }
 }
