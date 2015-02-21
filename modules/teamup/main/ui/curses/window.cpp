@@ -75,14 +75,12 @@ namespace Teamup {
                 if (pImpl->bordered_) {
                     int borderColour;
                     if (pImpl->focused_) {
-                        borderColour = getColour(Colours::WHITE, 35);
+                        borderColour = getColour(Colours::WHITE, 34);
                     } else {
-                        borderColour = getColour(Colours::WHITE, 1);
+                        borderColour = getColour(Colours::WHITE, 10);
                     }
 
-                    if (pImpl->focused_) {
-                        wattron(pImpl->window_, COLOR_PAIR(borderColour));
-                    }
+                    wattron(pImpl->window_, COLOR_PAIR(borderColour));
 
                     box(pImpl->window_, 0, 0);
                     if (!pImpl->title_.empty()) {
