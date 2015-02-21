@@ -1,4 +1,5 @@
 #include "ui/curses/window.h"
+#include "ui/curses/curses.h"
 #include <easylogging++.h>
 #include <ncurses.h>
 
@@ -72,8 +73,15 @@ namespace Teamup {
             void Window::render() {
                 wattrset(pImpl->window_, 0);
                 if (pImpl->bordered_) {
+                    int borderColour;
                     if (pImpl->focused_) {
-                        wattron(pImpl->window_, A_BOLD);
+                        borderColour = getColour(Colours::WHITE, 35);
+                    } else {
+                        borderColour = getColour(Colours::WHITE, 1);
+                    }
+
+                    if (pImpl->focused_) {
+                        wattron(pImpl->window_, COLOR_PAIR(borderColour));
                     }
 
                     box(pImpl->window_, 0, 0);
@@ -84,7 +92,7 @@ namespace Teamup {
 
                         mvwprintw(pImpl->window_, 0, titleOffset, "%s", actualTitle.c_str());
                     }
-                    wattroff(pImpl->window_, A_BOLD);
+                    wattroff(pImpl->window_, COLOR_PAIR(borderColour));
                 }
                 wnoutrefresh(pImpl->window_);
             }

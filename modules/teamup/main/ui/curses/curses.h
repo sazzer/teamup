@@ -1,3 +1,6 @@
+#ifndef TEAMUP_UI_CURSES_CURSES_H
+#define TEAMUP_UI_CURSES_CURSES_H
+
 #include <memory>
 #include "ui/curses/window.h"
 
@@ -64,6 +67,15 @@ namespace Teamup {
              * @param name The name of the window
              */
             void focusWindow(const std::string& name);
+            /**
+             * Get the ID of the colour pair for the requested colour and shade
+             * @param colour The colour to get
+             * @param shade The shade of the colour to get
+             * @return the colour ID
+             */
+            int getColour(Colours colour, int shade);
         }
     }
 }
+
+#endif

@@ -60,7 +60,12 @@ namespace Teamup {
                 int colourId = (shade * 7) + colourOffset + 1; // 1 is for the Black index 1
                 LOG(DEBUG) << colourName << "(" << shade << ") = (" << r << ", " << g << ", " << b << ")[" << colourId << "]";
                 init_color(colourId, r, g, b);
+                init_pair(colourId, colourId, 1);
+
                 colourPairs[std::pair<Colours, int>(colour, shade)] = colourId;
+            }
+            int getColour(Colours colour, int shade) {
+                return colourPairs[std::pair<Colours, int>(colour, shade)];
             }
 
             /**

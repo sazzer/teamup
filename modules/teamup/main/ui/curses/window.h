@@ -1,3 +1,6 @@
+#ifndef TEAMUP_UI_CURSES_WINDOW_H
+#define TEAMUP_UI_CURSES_WINDOW_H
+
 #include <memory>
 
 namespace Teamup {
@@ -85,3 +88,5 @@ namespace Teamup {
         }
     }
 }
+
+#endif
