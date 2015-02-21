@@ -1,58 +1,47 @@
 #include "ui/ui.h"
-#include "ui/curses/window.h"
 #include <memory>
-#include <easylogging++.h>
-#include <ncurses.h>
 #include <unistd.h>
+#include "ui/curses/curses.h"
 
 namespace Teamup {
     namespace UI {
         namespace Curses {
             class CursesUI {
                 public:
-                    CursesUI() {
-                        LOG(DEBUG) << "Starting Curses UI";
-                        // Do all of the initial setup
-                        initscr();
-                        keypad(stdscr, TRUE);
-                        nonl();
-                        cbreak();
-                        echo();
-                        if (has_colors()) {
-                            start_color();
+                    CursesUI() : curses_(new Curses) {
+                        unsigned int logsHeight = 10;
+                        unsigned int statusWidth = 30;
+                        unsigned int overallWidth = curses_->width();
+                        unsigned int overallHeight = curses_->height();
 
-                            init_pair(1, COLOR_RED,     COLOR_BLACK);
-                            init_pair(2, COLOR_GREEN,   COLOR_BLACK);
-                            init_pair(3, COLOR_YELLOW,  COLOR_BLACK);
-                            init_pair(4, COLOR_BLUE,    COLOR_BLACK);
-                            init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
-                            init_pair(6, COLOR_CYAN,    COLOR_BLACK);
-                            init_pair(7, COLOR_WHITE,   COLOR_BLACK);
-                        }
 
-                        clear();
-
-                        int logsHeight = 10;
-                        int statusWidth = 30;
-                        Window logs(0, LINES - logsHeight, COLS, logsHeight);
+                        Window& logs = curses_->createWindow("logs", 
+                                0, 
+                                overallHeight - logsHeight, 
+                                overallWidth, 
+                                logsHeight);
                         logs.title("Log");
                         logs.bordered(true);
-                        Window status(COLS - statusWidth, 0, statusWidth, LINES - logsHeight);
+                        Window& status = curses_->createWindow("status", 
+                                overallWidth - statusWidth, 
+                                0, 
+                                statusWidth, 
+                                overallHeight - logsHeight);
                         status.title("Status");
                         status.bordered(true);
                         status.focused(true);
-                        Window map(0, 0, COLS - statusWidth, LINES - logsHeight);
 
-                        logs.render();
-                        status.render();
-                        map.render();
-                        doupdate();
-                    }
-                    ~CursesUI() {
-                        LOG(DEBUG) << "Stopping Curses UI";
-                        endwin();
+                        curses_->createWindow("map", 
+                                0, 
+                                0, 
+                                overallWidth - statusWidth, 
+                                overallHeight - logsHeight);
+
+                        curses_->render();
                     }
                 private:
+                    /** The wrapper around curses */
+                    std::unique_ptr<Curses> curses_;
             };
         }
 

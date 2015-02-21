@@ -32,9 +32,11 @@ namespace Teamup {
                 pImpl->bordered_ = false;
                 pImpl->focused_ = false;
                 pImpl->window_ = newwin(height, width, y, x);
+                LOG(DEBUG) << "Creating window";
             }
             Window::~Window() {
                 delwin(pImpl->window_);
+                LOG(DEBUG) << "Destroyed window";
             }
             unsigned int Window::x() const {
                 return pImpl->x_;
