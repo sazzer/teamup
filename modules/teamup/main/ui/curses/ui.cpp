@@ -5,55 +5,54 @@
 
 namespace Teamup {
     namespace UI {
-        namespace Curses {
-            class CursesUI {
-                public:
-                    CursesUI() : curses_(new Curses) {
-                        unsigned int logsHeight = 10;
-                        unsigned int statusWidth = 30;
-                        unsigned int overallWidth = curses_->width();
-                        unsigned int overallHeight = curses_->height();
+        class CursesUI {
+            public:
+                CursesUI() {
+                    Curses::setup();
+                    unsigned int logsHeight = 10;
+                    unsigned int statusWidth = 30;
+                    unsigned int overallWidth = Curses::width();
+                    unsigned int overallHeight = Curses::height();
 
+                    Curses::createWindow("logs", 
+                            0, 
+                            overallHeight - logsHeight, 
+                            overallWidth, 
+                            logsHeight);
+                    Curses::createWindow("status", 
+                            overallWidth - statusWidth, 
+                            0, 
+                            statusWidth, 
+                            overallHeight - logsHeight);
 
-                        curses_->createWindow("logs", 
-                                0, 
-                                overallHeight - logsHeight, 
-                                overallWidth, 
-                                logsHeight);
-                        curses_->createWindow("status", 
-                                overallWidth - statusWidth, 
-                                0, 
-                                statusWidth, 
-                                overallHeight - logsHeight);
+                    Curses::configureWindow("logs", [](auto& logs) {
+                        logs.title("Log");
+                        logs.bordered(true);
+                        });
+                    Curses::configureWindow("status", [](auto& status) {
+                        status.title("Status");
+                        status.bordered(true);
+                        });
 
-                        curses_->configureWindow("logs", [](auto& logs) {
-                            logs.title("Log");
-                            logs.bordered(true);
-                            });
-                        curses_->configureWindow("status", [](auto& status) {
-                            status.title("Status");
-                            status.bordered(true);
-                            });
+                    Curses::createWindow("map", 
+                            0, 
+                            0, 
+                            overallWidth - statusWidth, 
+                            overallHeight - logsHeight);
 
-                        curses_->createWindow("map", 
-                                0, 
-                                0, 
-                                overallWidth - statusWidth, 
-                                overallHeight - logsHeight);
+                    Curses::focusWindow("status");
+                    Curses::render();
+                }
+                ~CursesUI() {
+                    Curses::shutdown();
+                }
+            private:
+        };
 
-                        curses_->focusWindow("status");
-                        curses_->render();
-                    }
-                private:
-                    /** The wrapper around curses */
-                    std::unique_ptr<Curses> curses_;
-            };
-        }
-
-        static std::unique_ptr<Curses::CursesUI> cursesUi;
+        static std::unique_ptr<CursesUI> cursesUi;
 
         void start() {
-            cursesUi.reset(new Curses::CursesUI);
+            cursesUi.reset(new CursesUI);
             sleep(5);
         }
     }
