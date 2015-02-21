@@ -45,12 +45,17 @@ namespace Teamup {
                             const unsigned int width,
                             const unsigned int height);
                     /**
-                     * Perform an action on the window with the given name
+                     * Configure the window with the given name
                      * @param name The name of the window
-                     * @param callback The callback to perform on the window
+                     * @param callback The callback to configure the window with
                      */
-                    void windowActor(const std::string& name, 
+                    void configureWindow(const std::string& name, 
                             std::function<void(Window&)> callback);
+                    /**
+                     * Mark the named Window as focused
+                     * @param name The name of the window
+                     */
+                    void focusWindow(const std::string& name);
                 private:
                     /** The private implementation */
                     struct Impl;

@@ -62,12 +62,17 @@ namespace Teamup {
                             name, 
                             std::unique_ptr<Window>(window)));
             }
-            void Curses::windowActor(const std::string& name, 
+            void Curses::configureWindow(const std::string& name, 
                     std::function<void(Window&)> callback) {
                 for (auto& win : pImpl->windows_) {
                     if (win.first == name) {
                         callback(*(win.second));
                     }
+                }
+            }
+            void Curses::focusWindow(const std::string& name) {
+                for (auto& win : pImpl->windows_) {
+                    win.second->focused(win.first == name);
                 }
             }
         }

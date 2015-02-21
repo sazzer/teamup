@@ -26,14 +26,13 @@ namespace Teamup {
                                 statusWidth, 
                                 overallHeight - logsHeight);
 
-                        curses_->windowActor("logs", [](auto& logs) {
+                        curses_->configureWindow("logs", [](auto& logs) {
                             logs.title("Log");
                             logs.bordered(true);
                             });
-                        curses_->windowActor("status", [](auto& status) {
+                        curses_->configureWindow("status", [](auto& status) {
                             status.title("Status");
                             status.bordered(true);
-                            status.focused(true);
                             });
 
                         curses_->createWindow("map", 
@@ -42,6 +41,7 @@ namespace Teamup {
                                 overallWidth - statusWidth, 
                                 overallHeight - logsHeight);
 
+                        curses_->focusWindow("status");
                         curses_->render();
                     }
                 private:
