@@ -4,7 +4,7 @@ PROJECT(Teamup CXX)
     #------------------------------------------------------------------------------
     # Set up the general configuration
     #------------------------------------------------------------------------------
-    SET(CMAKE_CXX_STANDARD 11)
+    SET(CMAKE_CXX_STANDARD 14)
     SET(CMAKE_CXX_STANDARD_REQUIRED ON)
     ENABLE_TESTING()
 

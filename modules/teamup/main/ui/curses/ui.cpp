@@ -15,21 +15,26 @@ namespace Teamup {
                         unsigned int overallHeight = curses_->height();
 
 
-                        Window& logs = curses_->createWindow("logs", 
+                        curses_->createWindow("logs", 
                                 0, 
                                 overallHeight - logsHeight, 
                                 overallWidth, 
                                 logsHeight);
-                        logs.title("Log");
-                        logs.bordered(true);
-                        Window& status = curses_->createWindow("status", 
+                        curses_->createWindow("status", 
                                 overallWidth - statusWidth, 
                                 0, 
                                 statusWidth, 
                                 overallHeight - logsHeight);
-                        status.title("Status");
-                        status.bordered(true);
-                        status.focused(true);
+
+                        curses_->windowActor("logs", [](auto& logs) {
+                            logs.title("Log");
+                            logs.bordered(true);
+                            });
+                        curses_->windowActor("status", [](auto& status) {
+                            status.title("Status");
+                            status.bordered(true);
+                            status.focused(true);
+                            });
 
                         curses_->createWindow("map", 
                                 0, 

@@ -50,7 +50,7 @@ namespace Teamup {
                 }
                 doupdate();
             }
-            Window& Curses::createWindow(const std::string& name, 
+            void Curses::createWindow(const std::string& name, 
                     const unsigned int x,
                     const unsigned int y,
                     const unsigned int width,
@@ -61,7 +61,14 @@ namespace Teamup {
                         std::pair<std::string, std::unique_ptr<Window>>(
                             name, 
                             std::unique_ptr<Window>(window)));
-                return *window;
+            }
+            void Curses::windowActor(const std::string& name, 
+                    std::function<void(Window&)> callback) {
+                for (auto& win : pImpl->windows_) {
+                    if (win.first == name) {
+                        callback(*(win.second));
+                    }
+                }
             }
         }
     }

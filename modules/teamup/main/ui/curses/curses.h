@@ -38,13 +38,19 @@ namespace Teamup {
                      * @param y The Y-Ordinate
                      * @param width The width
                      * @param height The height
-                     * @return a reference to the window
                      */
-                    Window& createWindow(const std::string& name, 
+                    void createWindow(const std::string& name, 
                             const unsigned int x,
                             const unsigned int y,
                             const unsigned int width,
                             const unsigned int height);
+                    /**
+                     * Perform an action on the window with the given name
+                     * @param name The name of the window
+                     * @param callback The callback to perform on the window
+                     */
+                    void windowActor(const std::string& name, 
+                            std::function<void(Window&)> callback);
                 private:
                     /** The private implementation */
                     struct Impl;
