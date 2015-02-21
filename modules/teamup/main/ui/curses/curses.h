@@ -5,6 +5,19 @@ namespace Teamup {
     namespace UI {
         namespace Curses {
             /**
+             * Enumeration of the colours supported
+             */
+            enum class Colours {
+                BLACK,
+                RED,
+                GREEN,
+                YELLOW,
+                BLUE,
+                MAGENTA,
+                CYAN,
+                WHITE
+            };
+            /**
              * Set up Curses ready to use
              */
             void setup();
