@@ -44,6 +44,17 @@ PROJECT(Teamup CXX)
     ADD_TEST(NAME Teamup COMMAND TeamupTest)
 
     #------------------------------------------------------------------------------
+    # The integration tests
+    #------------------------------------------------------------------------------
+    ADD_EXECUTABLE(ScreenshotTest modules/teamup/test/screenshot.cpp)
+    TARGET_INCLUDE_DIRECTORIES(ScreenshotTest PUBLIC ${CURSES_INCLUDE_DIRS})
+    TARGET_LINK_LIBRARIES(ScreenshotTest ${CURSES_LIBRARIES})
+
+    ADD_EXECUTABLE(ColoursTest modules/teamup/test/colours.cpp)
+    TARGET_INCLUDE_DIRECTORIES(ColoursTest PUBLIC ${CURSES_INCLUDE_DIRS})
+    TARGET_LINK_LIBRARIES(ColoursTest ${CURSES_LIBRARIES})
+
+    #------------------------------------------------------------------------------
     # Copy some files into the build area for running with
     #------------------------------------------------------------------------------
     CONFIGURE_FILE(files/dev/logging.conf logging.conf COPYONLY)
