@@ -64,10 +64,14 @@ int main(void) {
     unsigned int statusStart = (firstCol - 1) + (map[0].size() + 2);
     unsigned int statusSize = COLS - statusStart;
 
+    unsigned int charWidth = 37;
+    unsigned int charHeight = 14;
+
     WINDOW* mapWindow = newwin(map.size() + 2, map[0].size() + 2, 0, firstCol - 1);
     WINDOW* logWindow = newwin(logSize + 2, mapWidth, map.size() + 2, 0);
     WINDOW* statusWindow = newwin(map.size() + 2, statusSize, 0, statusStart);
     WINDOW* questWindow = newwin(map.size() + 2, firstCol - 1, 0, 0);
+    WINDOW* characterWindow = newwin(charHeight, charWidth, (LINES - charHeight) / 2, (COLS - charWidth) / 2);
 
     clear();
     wborder(mapWindow, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -176,17 +180,80 @@ int main(void) {
     mvwprintw(questWindow, 6, firstCol - 4, "%c", '/');
     wattrset(questWindow, 0);
 
+    wclear(characterWindow);
+    wborder(characterWindow, 0, 0, 0, 0, 0, 0, 0, 0);
+    mvwprintw(characterWindow, 0, (charWidth - 5) / 2, "Krusk");
+    wattron(characterWindow, A_UNDERLINE);
+    mvwprintw(characterWindow, 1, 1, "Equipment");
+    wattroff(characterWindow, A_UNDERLINE);
+    mvwprintw(characterWindow, 1, 14, "Inventory");
+    mvwprintw(characterWindow, 1, 27, "Character");
+
+    mvwprintw(characterWindow, 3, 1, "Head         Plate Helm");
+    mvwprintw(characterWindow, 4, 1, "Neck");
+    mvwprintw(characterWindow, 5, 1, "Torso        Cobalt Plate");
+    mvwprintw(characterWindow, 6, 1, "Left Hand    Ring of Swimming");
+    mvwprintw(characterWindow, 7, 1, "Right Hand  ");
+    mvwprintw(characterWindow, 8, 1, "Legs         Cobalt Plate");
+
+    mvwprintw(characterWindow, 10, 1, "Left Arm     Greatsword");
+    mvwprintw(characterWindow, 11, 1, "Right Arm    Greatsword");
+
     wnoutrefresh(mapWindow);
     wnoutrefresh(logWindow);
     wnoutrefresh(statusWindow);
     wnoutrefresh(questWindow);
-
     doupdate();
-
     wgetch(mapWindow);
+
+    wnoutrefresh(characterWindow);
+    doupdate();
+    wgetch(mapWindow);
+
+    wclear(characterWindow);
+    wborder(characterWindow, 0, 0, 0, 0, 0, 0, 0, 0);
+    mvwprintw(characterWindow, 0, (charWidth - 5) / 2, "Krusk");
+    mvwprintw(characterWindow, 1, 1, "Equipment");
+    wattron(characterWindow, A_UNDERLINE);
+    mvwprintw(characterWindow, 1, 14, "Inventory");
+    wattroff(characterWindow, A_UNDERLINE);
+    mvwprintw(characterWindow, 1, 27, "Character");
+
+    mvwprintw(characterWindow, 3, 1, "3 Potions of Healing");
+    mvwprintw(characterWindow, 4, 1, "Potion of Speed");
+    mvwprintw(characterWindow, 5, 1, "7 Trail Rations");
+    mvwprintw(characterWindow, 6, 1, "Horse Feed");
+    mvwprintw(characterWindow, 7, 1, "Obsidian Dagger");
+    mvwprintw(characterWindow, 8, 1, "297 Gold Coins");
+    wnoutrefresh(characterWindow);
+    doupdate();
+    wgetch(mapWindow);
+
+    wclear(characterWindow);
+    wborder(characterWindow, 0, 0, 0, 0, 0, 0, 0, 0);
+    mvwprintw(characterWindow, 0, (charWidth - 5) / 2, "Krusk");
+    mvwprintw(characterWindow, 1, 1, "Equipment");
+    mvwprintw(characterWindow, 1, 14, "Inventory");
+    wattron(characterWindow, A_UNDERLINE);
+    mvwprintw(characterWindow, 1, 27, "Character");
+    wattroff(characterWindow, A_UNDERLINE);
+
+    mvwprintw(characterWindow, 3, 1, "Health       4 / 100");
+    mvwprintw(characterWindow, 4, 1, "Mana         0 / 0");
+    mvwprintw(characterWindow, 6, 1, "Strength     45");
+    mvwprintw(characterWindow, 7, 1, "Dexterity    35");
+    mvwprintw(characterWindow, 8, 1, "Constitution 40");
+    mvwprintw(characterWindow, 9, 1, "Wisdom       30");
+    mvwprintw(characterWindow, 10, 1, "Intelligence 20");
+    mvwprintw(characterWindow, 11, 1, "Charisma     40");
+    wnoutrefresh(characterWindow);
+    doupdate();
+    wgetch(mapWindow);
+
     delwin(mapWindow);
     delwin(logWindow);
     delwin(statusWindow);
     delwin(questWindow);
+    delwin(characterWindow);
     endwin();
 }
