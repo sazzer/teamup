@@ -1,0 +1,46 @@
+## World Size
+
+Faerun is ~ 4000 x 6000 Km
+This is 400,000 x 600,000 m
+
+Assuming that we store the heightmap with one byte per cell. That allows for 256 steps in height. 
+
+Everest is 8,848m in height, which would need each step to be 35m.
+
+* If we stored the heightmap at a 1x1m level, this is 400,000 * 600,000 bytes = 240,000,000,000 bytes = 223 GB of memory.
+* If we stored the heightmap at a 10x10m level, this is 40,000 * 60,000 bytes = 2,400,000,000 bytes = 2.2 GB of memory.
+* If we stored the heightmap at a 100x100m level, this is 4,000 * 4,000 bytes = 24,000,000 bytes = 23 MB of memory.
+
+However. Apparently the average hiking speed for someone who is experienced at this is 20 Km per day, so a world the size of Faerun would take 200 days = 7 months to hike the short side, or 300 days = 10 months to hike the long side. This is an excessively long time.
+
+By comparison: (http://www.gamefaqs.com/boards/615805-/61236158)
+* Skyrim Tamriel is 6.9 x 5.4 Km in size.
+* Oblivion Cyrodill is 7.7 x 7.4 Km in size.
+* Morrowind Vvardenfell is 4.8 x 5 Km in size.
+* Fallout 3 Wasteland is 11.3 x 11.5 Km in size.
+* Fallout 3 New Vegas is 7.3 x 7.4 Km in size.
+
+Each of these can be hiked, under ideal circumstances, in half a day along each side. 
+
+By these numbers, if we stored the heightmap at a 1x1m level:
+
+* Skyrim Tamriel, this is 6,900 * 5,400 = 37,260,000 bytes = 36 MB of memory.
+* Oblivion Cyrodill, this is 7,700 * 7,400 = 56,980,000 bytes = 54 MB of memory.
+* Morrowind Vvardenfell, this is 4,800 * 5,000 = 24,000,000 bytes = 23 MB of memory
+* Fallout 3 Wasteland, this is 11,300 * 11,500 = 1,299,500,000 bytes = 1.2 GB of memory.
+* Fallout 3 New Vegas, this is 7,300 * 7,400 = 54,020,000 bytes = 52 MB of memory.
+
+This means we can reasonably store the heights in 2 bytes instead of 1, which allows for 65536 steps in height.
+
+Everest is 8,848m in height, which would thus need each step to be 13cm.
+
+This we can store a world that is the size of Oblivion or Fallout 3 New Vegas, with 8 height steps per metre, in ~100 MB and still have a mountain the height of Everest represented. More likely we would either use a larger height step, or just have shallower mountains, and use half of the range to represent depths as well.
+
+To make a real world comparison, Sheffield is 367 Km^2, which would be 20 Km to a side if it were square. Chesterfield is 66 Km^2, which would be 8 Km to a side. This means that none of the Bethesda worlds above are the size of Sheffield, and Fallout 3 New Vegas is comparable to Chesterfield.
+
+The area of Yorkshire is 11,903 Km^2, which would be 109 Km to a side. Working this out at 1 byte per cell would be.
+
+* 1m x 1m = 11,903,000,000 bytes = 11 GB of memory
+* 5m x 5m = 476,120,000 bytes = 454 MB of memory
+* 10m x 10m = 119,030,000 bytes = 113 MB of memory
+
