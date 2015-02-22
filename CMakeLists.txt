@@ -13,6 +13,7 @@ PROJECT(Teamup CXX)
     #------------------------------------------------------------------------------
     FIND_PACKAGE(PkgConfig)
     FIND_PACKAGE(Curses)
+    PKG_CHECK_MODULES(LIBPNG libpng)
 
     #------------------------------------------------------------------------------
     # The library that is the majority of the code
@@ -50,6 +51,10 @@ PROJECT(Teamup CXX)
     ADD_EXECUTABLE(ColoursTest modules/teamup/test/colours.cpp)
     TARGET_INCLUDE_DIRECTORIES(ColoursTest PUBLIC ${CURSES_INCLUDE_DIRS})
     TARGET_LINK_LIBRARIES(ColoursTest ${CURSES_LIBRARIES})
+
+    ADD_EXECUTABLE(PngTest modules/teamup/test/png.cpp)
+    TARGET_INCLUDE_DIRECTORIES(PngTest PUBLIC ${LIBPNG_INCLUDE_DIRS})
+    TARGET_LINK_LIBRARIES(PngTest ${LIBPNG_LIBRARIES})
 
     #------------------------------------------------------------------------------
     # Copy some files into the build area for running with
