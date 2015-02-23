@@ -44,3 +44,14 @@ The area of Yorkshire is 11,903 Km^2, which would be 109 Km to a side. Working t
 * 5m x 5m = 476,120,000 bytes = 454 MB of memory
 * 10m x 10m = 119,030,000 bytes = 113 MB of memory
 
+If each increment in height works out the same then we get:
+* 1m = 256m height difference
+* 5m = 1,280m height difference
+* 10m = 2,560m height difference
+
+This means we could use cells of 5m x 5m x 5m and represent a world the size of Yorkshire, with a maximum height difference of 1.28 Km. This would then take 454MB of memory to store. 
+
+Alternatively we could use 2 bytes per cell to do this in 908MB of memory, and then have a larger height difference.
+
+If we reasonably say that a city the size of Chesterfield is "Large", then a world the size of Yorkshire can comfortably have 100 cities without overlap. This is probably excessive.
+
