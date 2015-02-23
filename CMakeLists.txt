@@ -18,7 +18,8 @@ PROJECT(Teamup CXX)
     #------------------------------------------------------------------------------
     # The library that is the majority of the code
     #------------------------------------------------------------------------------
-    ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp)
+    ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp
+        modules/teamup/main/world/generator/heightmap.cpp)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/teamup/main)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/easyloggingpp/src)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CURSES_INCLUDE_DIRS})
@@ -55,6 +56,12 @@ PROJECT(Teamup CXX)
     ADD_EXECUTABLE(PngTest modules/teamup/test/png.cpp)
     TARGET_INCLUDE_DIRECTORIES(PngTest PUBLIC ${LIBPNG_INCLUDE_DIRS})
     TARGET_LINK_LIBRARIES(PngTest ${LIBPNG_LIBRARIES})
+
+    ADD_EXECUTABLE(HeightmapPngTest modules/teamup/test/heightmapPng.cpp)
+    TARGET_INCLUDE_DIRECTORIES(HeightmapPngTest PUBLIC ${LIBPNG_INCLUDE_DIRS})
+    TARGET_INCLUDE_DIRECTORIES(HeightmapPngTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/teamup/main)
+    TARGET_LINK_LIBRARIES(HeightmapPngTest TeamupLib)
+    TARGET_LINK_LIBRARIES(HeightmapPngTest ${LIBPNG_LIBRARIES})
 
     #------------------------------------------------------------------------------
     # Copy some files into the build area for running with
