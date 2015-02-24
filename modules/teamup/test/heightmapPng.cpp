@@ -2,15 +2,17 @@
 #include <cstdio>
 #include <iostream>
 #include "world/generator/generator.h"
+#include <easylogging++.h>
+
+INITIALIZE_EASYLOGGINGPP
 
 int renderHeightmap(const std::string& filename, const Teamup::World::Generator::Heightmap& heightmap);
 
-static const unsigned int WIDTH = 256;
-static const unsigned int HEIGHT = 256;
-int main(void) {
+int main(int argc, char** argv) {
+    START_EASYLOGGINGPP(argc, argv);
     Teamup::World::Generator::GeneratorSettings settings {
-        .width = WIDTH,
-        .height = HEIGHT
+        .width = 1000,
+        .height = 1000
     };
 
     Teamup::World::Generator::Heightmap heightmap = Teamup::World::Generator::generateHeightmap(settings);
@@ -62,11 +64,24 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
 
 
     png_byte* row = new png_byte[3 * heightmap.width()];
-    for (int y = 0; y < HEIGHT; ++y) {
+    for (int y = 0; y < heightmap.height(); ++y) {
         for (int x = 0; x < heightmap.width(); ++x) {
-            row[(x * 3) + 0] = heightmap.get(x, y);
-            row[(x * 3) + 1] = 0;
-            row[(x * 3) + 2] = 0;
+            short v = heightmap.get(x, y);
+            if (v < 0) {
+                // Water
+                unsigned char value = (32767 + v) / 129;
+                row[(x * 3) + 0] = 0;
+                row[(x * 3) + 1] = 0;
+                row[(x * 3) + 2] = value;
+                VLOG(9) << "(" << x << ", " << y << ") = Water(" << v << ", " << (int)value << ")";
+            } else {
+                // Land
+                unsigned char value = v / 129;
+                row[(x * 3) + 0] = 0;
+                row[(x * 3) + 1] = value;
+                row[(x * 3) + 2] = 0;
+                VLOG(9) << "(" << x << ", " << y << ") = Land(" << v << ", " << (int)value << ")";
+            }
         }
         png_write_row(pngPtr, row);
     }
