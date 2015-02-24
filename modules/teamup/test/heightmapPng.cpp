@@ -1,19 +1,19 @@
 #include <png.h>
 #include <cstdio>
 #include <iostream>
-#include "world/generator/heightmap.h"
+#include "world/generator/generator.h"
 
 int renderHeightmap(const std::string& filename, const Teamup::World::Generator::Heightmap& heightmap);
 
 static const unsigned int WIDTH = 256;
 static const unsigned int HEIGHT = 256;
 int main(void) {
-    Teamup::World::Generator::Heightmap heightmap(WIDTH, HEIGHT);
-    for (int w = 0; w < WIDTH; ++w) {
-        for (int h = 0; h < HEIGHT; ++h) {
-            heightmap.set(w, h, h);
-        }
-    }
+    Teamup::World::Generator::GeneratorSettings settings {
+        .width = WIDTH,
+        .height = HEIGHT
+    };
+
+    Teamup::World::Generator::Heightmap heightmap = Teamup::World::Generator::generateHeightmap(settings);
 
     return renderHeightmap("/tmp/test.png", heightmap);
 }
