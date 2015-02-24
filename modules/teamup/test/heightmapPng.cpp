@@ -68,15 +68,17 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
         for (int x = 0; x < heightmap.width(); ++x) {
             short v = heightmap.get(x, y);
             if (v < 0) {
-                // Water
-                unsigned char value = (32767 + v) / 129;
+                // Water. Capped at -10,000
+                short cappedValue = std::max((short)-10000, v);
+                unsigned char value = (10000 + cappedValue) / 40;
                 row[(x * 3) + 0] = 0;
                 row[(x * 3) + 1] = 0;
                 row[(x * 3) + 2] = value;
                 VLOG(9) << "(" << x << ", " << y << ") = Water(" << v << ", " << (int)value << ")";
             } else {
-                // Land
-                unsigned char value = v / 129;
+                // Land. Capped at +20,000
+                short cappedValue = std::min((short)20000, v);
+                unsigned char value = 32 + ((cappedValue / 80) * 7/8);
                 row[(x * 3) + 0] = 0;
                 row[(x * 3) + 1] = value;
                 row[(x * 3) + 2] = 0;

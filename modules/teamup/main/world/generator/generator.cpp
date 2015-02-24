@@ -2,6 +2,12 @@
 #include <easylogging++.h>
 #include <list>
 
+/** The value to use for the borders */
+static const short BORDER_VALUE = -10000;
+/** The value to use for the seeds */
+static const short SEED_VALUE = 10000;
+/** The number of loops to run seeds for */
+static const unsigned int SEED_LOOP_COUNT = 2;
 namespace Teamup {
     namespace World {
         namespace Generator {
@@ -146,22 +152,22 @@ namespace Teamup {
                 // Step 1 - Mark all of the borders as ocean
                 LOG(DEBUG) << "Setting borders to Ocean";
                 for (int w = 0; w < settings.width; ++w) {
-                    setCell(heightmap, calculated, w, 0, -1);
-                    setCell(heightmap, calculated, w, settings.height - 1, -1);
+                    setCell(heightmap, calculated, w, 0, BORDER_VALUE);
+                    setCell(heightmap, calculated, w, settings.height - 1, BORDER_VALUE);
                 }
                 for (int h = 0; h < settings.height; ++h) {
-                    setCell(heightmap, calculated, 0, h, -1);
-                    setCell(heightmap, calculated, settings.width - 1, h, -1);
+                    setCell(heightmap, calculated, 0, h, BORDER_VALUE);
+                    setCell(heightmap, calculated, settings.width - 1, h, BORDER_VALUE);
                 }
 
                 // Step 2 - Set some higher seed points
                 LOG(DEBUG) << "Setting seed points";
                 std::list<Region> regions;
                 regions.push_back(Region(0, 0, settings.width - 1, settings.height - 1));
-                for (int i = 0; i < 2; ++i) {
+                for (int i = 0; i < SEED_LOOP_COUNT; ++i) {
                     std::list<Region> newRegions;
                     for (Region& region : regions) {
-                        updateHeightmap(heightmap, calculated, region, 10000);
+                        updateHeightmap(heightmap, calculated, region, SEED_VALUE);
                         region.divide(newRegions);
                     }
                     std::swap(regions, newRegions);
