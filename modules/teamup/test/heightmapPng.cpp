@@ -11,8 +11,8 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
 int main(int argc, char** argv) {
     START_EASYLOGGINGPP(argc, argv);
     Teamup::World::Generator::GeneratorSettings settings {
-        .width = 1000,
-        .height = 1000
+        .width = 5000,
+        .height = 5000
     };
 
     Teamup::World::Generator::Heightmap heightmap = Teamup::World::Generator::generateHeightmap(settings);

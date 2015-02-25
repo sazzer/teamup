@@ -1,16 +1,21 @@
 #include "world/generator/generator.h"
 #include <easylogging++.h>
 #include <list>
+#include <random>
 
 /** The value to use for the borders */
 static const short BORDER_VALUE = -10000;
 /** The value to use for the seeds */
-static const short SEED_VALUE = 10000;
+static const short SEED_VALUE = 5000;
 /** The number of loops to run seeds for */
 static const unsigned int SEED_LOOP_COUNT = 2;
 namespace Teamup {
     namespace World {
         namespace Generator {
+
+            std::random_device rd;
+            std::default_random_engine e1(rd());
+
             /**
              * Helper to update a cell on the heightmap, only if it's not already set
              * @param heightmap The heightmap to update
@@ -21,11 +26,11 @@ namespace Teamup {
              */
             static void setCell(Heightmap& heightmap, std::vector<std::vector<bool>>& record, unsigned int x, unsigned int y, short v) {
                 if (!record[x][y]) {
-                    VLOG(1) << "Setting value for cell (" << x << ", " << y << ") to " << v;
+                    VLOG(3) << "Setting value for cell (" << x << ", " << y << ") to " << v;
                     heightmap.set(x, y, v);
                     record[x][y] = true;
                 } else {
-                    VLOG(1) << "Cell (" << x << ", " << y << ") already set";
+                    VLOG(3) << "Cell (" << x << ", " << y << ") already set";
                 }
             }
 
@@ -76,13 +81,27 @@ namespace Teamup {
                  */
                 void add(std::list<Region>& regions, Region region) const {
                     if (region.x1 != region.x2 && region.y1 != region.y2) {
-                        VLOG(1) << "Adding region (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ")";
+                        VLOG(3) << "Adding region (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ")";
                         regions.push_back(region);
                     } else {
-                        VLOG(1) << "Not adding region (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ") as area is zero";
+                        VLOG(3) << "Not adding region (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ") as area is zero";
                     }
                 }
             };
+
+            /**
+             * Test if the given X and Y Co-ordinates are on the edge of the heightmak
+             * @param  heightmap The heightmap
+             * @param  x         The X-Ordinate
+             * @param  y         The Y-Ordinate
+             * @return           True if they are on the edge. False if not
+             */
+            bool isEdge(const Heightmap& heightmap, const unsigned int x, const unsigned int y) {
+                const unsigned int maxX = heightmap.width() - 1;
+                const unsigned int maxY = heightmap.height() - 1;
+
+                return (x == 0 || x == maxX || y == 0 || y == maxY);
+            }
 
             /**
              * Update the heightmap by dividing the region
@@ -93,16 +112,18 @@ namespace Teamup {
              */
             void updateHeightmap(Heightmap& heightmap, std::vector<std::vector<bool>>& record, const Region& region, const short value) {
                 VLOG(1) << "Setting fixed values for region centres (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ") to " << value;
+                std::uniform_real_distribution<float> dist(0.7, 1.7);
+
                 // Top Middle
-                setCell(heightmap, record, region.mx, region.y1, value);
+                setCell(heightmap, record, region.mx, region.y1, value * dist(e1));
                 // Bottom Middle
-                setCell(heightmap, record, region.mx, region.y2, value);
+                setCell(heightmap, record, region.mx, region.y2, value * dist(e1));
                 // Middle Left
-                setCell(heightmap, record, region.x1, region.my, value);
+                setCell(heightmap, record, region.x1, region.my, value * dist(e1));
                 // Middle Right
-                setCell(heightmap, record, region.x2, region.my, value);
+                setCell(heightmap, record, region.x2, region.my, value * dist(e1));
                 // Center
-                setCell(heightmap, record, region.mx, region.my, value);
+                //setCell(heightmap, record, region.mx, region.my, value * dist(e1));
             }
 
             /**
@@ -113,30 +134,31 @@ namespace Teamup {
              */
             void updateHeightmap(Heightmap& heightmap, std::vector<std::vector<bool>>& record, const Region& region) {
                 short value;
-                VLOG(1) << "Setting generated values for region centres (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ")";
-                
+                VLOG(2) << "Setting generated values for region centres (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ")";
+                std::uniform_real_distribution<float> dist(0.5, 1.5);
+
                 // Top Middle
                 value = (heightmap.get(region.x1, region.y1) + heightmap.get(region.x2, region.y1)) / 2;
-                setCell(heightmap, record, region.mx, region.y1, value);
+                setCell(heightmap, record, region.mx, region.y1, value * dist(e1));
                 
                 // Bottom Middle
                 value = (heightmap.get(region.x1, region.y2) + heightmap.get(region.x2, region.y2)) / 2;
-                setCell(heightmap, record, region.mx, region.y2, value);
+                setCell(heightmap, record, region.mx, region.y2, value * dist(e1));
                 
                 // Middle Left
                 value = (heightmap.get(region.x1, region.y1) + heightmap.get(region.x1, region.y2)) / 2;
-                setCell(heightmap, record, region.x1, region.my, value);
+                setCell(heightmap, record, region.x1, region.my, value * dist(e1));
                 
                 // Middle Right
                 value = (heightmap.get(region.x2, region.y1) + heightmap.get(region.x2, region.y2)) / 2;
-                setCell(heightmap, record, region.x2, region.my, value);
+                setCell(heightmap, record, region.x2, region.my, value * dist(e1));
 
                 // Center
                 value = (heightmap.get(region.x1, region.y1) 
                         + heightmap.get(region.x2, region.y1)
                         + heightmap.get(region.x1, region.y2)
                         + heightmap.get(region.x2, region.y2)) / 4;
-                setCell(heightmap, record, region.mx, region.my, value);
+                setCell(heightmap, record, region.mx, region.my, value * dist(e1));
             }
 
             Heightmap generateHeightmap(const GeneratorSettings& settings) {
@@ -151,11 +173,11 @@ namespace Teamup {
 
                 // Step 1 - Mark all of the borders as ocean
                 LOG(DEBUG) << "Setting borders to Ocean";
-                for (int w = 0; w < settings.width; ++w) {
+                for (unsigned int w = 0; w < settings.width; ++w) {
                     setCell(heightmap, calculated, w, 0, BORDER_VALUE);
                     setCell(heightmap, calculated, w, settings.height - 1, BORDER_VALUE);
                 }
-                for (int h = 0; h < settings.height; ++h) {
+                for (unsigned int h = 0; h < settings.height; ++h) {
                     setCell(heightmap, calculated, 0, h, BORDER_VALUE);
                     setCell(heightmap, calculated, settings.width - 1, h, BORDER_VALUE);
                 }
