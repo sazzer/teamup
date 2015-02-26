@@ -1,6 +1,7 @@
 #include <png.h>
 #include <cstdio>
 #include <iostream>
+#include <fstream>
 #include "world/generator/generator.h"
 #include <easylogging++.h>
 
@@ -11,8 +12,8 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
 int main(int argc, char** argv) {
     START_EASYLOGGINGPP(argc, argv);
     Teamup::World::Generator::GeneratorSettings settings {
-        .width = 5000,
-        .height = 5000
+        .width = 8192,
+        .height = 8192
     };
 
     Teamup::World::Generator::Heightmap heightmap = Teamup::World::Generator::generateHeightmap(settings);
@@ -64,29 +65,57 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
 
 
     png_byte* row = new png_byte[3 * heightmap.width()];
+    const short WATER_LOW = 10000;
+    const short MOUNTAIN = 10000;
+    const unsigned char MOUNTAIN_COLOUR_START = 192;
+    const unsigned char LAND_COLOUR_START = 64;
+
+    short highestPeak = 0;
+    short lowestDepth = 0;
+    for (int y = 0; y < heightmap.height(); ++y) {
+        for (int x = 0; x < heightmap.width(); ++x) {
+            const short height = heightmap.get(x, y);
+            highestPeak = std::max(height, highestPeak);
+            lowestDepth = std::min(height, lowestDepth);
+        }
+    }
+
+    std::ofstream csv;
+    csv.open("/tmp/test.csv");
+
     for (int y = 0; y < heightmap.height(); ++y) {
         for (int x = 0; x < heightmap.width(); ++x) {
             short v = heightmap.get(x, y);
+            if (x > 0) {
+                csv << ",";
+            }
+            csv << v;
+
             if (v < 0) {
-                // Water. Capped at -10,000
-                short cappedValue = std::max((short)-10000, v);
-                unsigned char value = (10000 + cappedValue) / 40;
+                short cappedValue = std::max((short)(lowestDepth), v);
+                unsigned short value = (std::abs(lowestDepth) + cappedValue) / (std::abs(lowestDepth) / 250);
                 row[(x * 3) + 0] = 0;
                 row[(x * 3) + 1] = 0;
                 row[(x * 3) + 2] = value;
                 VLOG(9) << "(" << x << ", " << y << ") = Water(" << v << ", " << (int)value << ")";
+            } else if (v > MOUNTAIN) {
+                unsigned short value = MOUNTAIN_COLOUR_START + ((v - MOUNTAIN) / ((highestPeak - MOUNTAIN) / (250 - MOUNTAIN_COLOUR_START)));
+                row[(x * 3) + 0] = value;
+                row[(x * 3) + 1] = value;
+                row[(x * 3) + 2] = value;
+                VLOG(9) << "(" << x << ", " << y << ") = Mountains(" << v << ", " << (int)value << ")";
             } else {
-                // Land. Capped at +20,000
-                short cappedValue = std::min((short)20000, v);
-                unsigned char value = 32 + ((cappedValue / 80) * 7/8);
+                unsigned short value = LAND_COLOUR_START + (v / (MOUNTAIN / (250 - LAND_COLOUR_START)));
                 row[(x * 3) + 0] = 0;
                 row[(x * 3) + 1] = value;
                 row[(x * 3) + 2] = 0;
                 VLOG(9) << "(" << x << ", " << y << ") = Land(" << v << ", " << (int)value << ")";
             }
         }
+        csv << std::endl;
         png_write_row(pngPtr, row);
     }
+    csv.close();
 
     delete[] row;
 

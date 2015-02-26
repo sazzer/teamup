@@ -4,11 +4,11 @@
 #include <random>
 
 /** The value to use for the borders */
-static const short BORDER_VALUE = -10000;
+static const short BORDER_VALUE = -5000;
 /** The value to use for the seeds */
 static const short SEED_VALUE = 5000;
 /** The number of loops to run seeds for */
-static const unsigned int SEED_LOOP_COUNT = 2;
+static const unsigned int SEED_LOOP_COUNT = 3;
 namespace Teamup {
     namespace World {
         namespace Generator {
@@ -104,6 +104,40 @@ namespace Teamup {
             }
 
             /**
+             * Calculate the seed point change based on the distance into the heightmap a position is
+             * @param heightmap the heightmap to use
+             * @param x The X-Ordinate
+             * @param y The Y-Ordinate
+             * @return the percentage chance of placing a seed
+             */
+            double seedPointChance(const Heightmap& heightmap, const unsigned int x, const unsigned int y) {
+                const unsigned int mx = heightmap.width() - 1;
+                const unsigned int my = heightmap.height() - 1;
+
+                const double halfWidth = mx / 2;
+                const double halfHeight = my / 2;
+
+                const double hx = (x > halfWidth) ? mx - x : x;
+                const double hy = (y > halfHeight) ? my - y : y;
+
+                double px = hx / halfWidth;
+                double py = hy / halfHeight;
+
+                return std::max(px, py);
+            }
+
+            void seed(Heightmap& heightmap, std::vector<std::vector<bool>>& record, const unsigned int x, const unsigned int y, const short value) {
+                std::uniform_real_distribution<double> seedChoice(0, 1);
+                const double chance = seedPointChance(heightmap, x, y);
+                const double choice = seedChoice(e1);
+                VLOG(1) << "Will we generate this seed? (" << x << ", " << y << ") = " << chance << " > " << choice;
+                if (chance > choice) {
+                    VLOG(1) << "Generating seed at (" << x << ", " << y << ")";
+                    setCell(heightmap, record, x, y, value);
+                }
+            }
+
+            /**
              * Update the heightmap by dividing the region
              * @param heightmap The heightmap to update
              * @param record The record of cells we've updated
@@ -112,18 +146,22 @@ namespace Teamup {
              */
             void updateHeightmap(Heightmap& heightmap, std::vector<std::vector<bool>>& record, const Region& region, const short value) {
                 VLOG(1) << "Setting fixed values for region centres (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ") to " << value;
-                std::uniform_real_distribution<float> dist(0.7, 1.7);
+                double heightmapArea = heightmap.width();
+                double regionArea = region.x2 - region.x1;
+                double areaPercentage = 2 * (regionArea / heightmapArea);
+
+                std::uniform_real_distribution<double> dist(-0.5, 3);
 
                 // Top Middle
-                setCell(heightmap, record, region.mx, region.y1, value * dist(e1));
+                seed(heightmap, record, region.mx, region.y1, value * dist(e1) * areaPercentage);
                 // Bottom Middle
-                setCell(heightmap, record, region.mx, region.y2, value * dist(e1));
+                seed(heightmap, record, region.mx, region.y2, value * dist(e1) * areaPercentage);
                 // Middle Left
-                setCell(heightmap, record, region.x1, region.my, value * dist(e1));
+                seed(heightmap, record, region.x1, region.my, value * dist(e1) * areaPercentage);
                 // Middle Right
-                setCell(heightmap, record, region.x2, region.my, value * dist(e1));
+                seed(heightmap, record, region.x2, region.my, value * dist(e1) * areaPercentage);
                 // Center
-                //setCell(heightmap, record, region.mx, region.my, value * dist(e1));
+                seed(heightmap, record, region.mx, region.my, value * dist(e1) * areaPercentage);
             }
 
             /**
@@ -135,7 +173,11 @@ namespace Teamup {
             void updateHeightmap(Heightmap& heightmap, std::vector<std::vector<bool>>& record, const Region& region) {
                 short value;
                 VLOG(2) << "Setting generated values for region centres (" << region.x1 << ", " << region.y1 << ") - (" << region.x2 << ", " << region.y2 << ")";
-                std::uniform_real_distribution<float> dist(0.5, 1.5);
+                double heightmapArea = heightmap.width();
+                double regionArea = region.x2 - region.x1;
+                double areaPercentage = 2 * (regionArea / heightmapArea);
+
+                std::uniform_real_distribution<float> dist(1 - areaPercentage, 1 + areaPercentage);
 
                 // Top Middle
                 value = (heightmap.get(region.x1, region.y1) + heightmap.get(region.x2, region.y1)) / 2;
@@ -199,6 +241,7 @@ namespace Teamup {
                 LOG(DEBUG) << "Generating heightmap";
                 while (!regions.empty()) {
                     std::list<Region> newRegions;
+                    VLOG(1) << "Next set of regions: " << regions.size();
                     for (Region& region : regions) {
                         updateHeightmap(heightmap, calculated, region);
                         region.divide(newRegions);
@@ -206,6 +249,7 @@ namespace Teamup {
                     std::swap(regions, newRegions);
                 }
                 
+                LOG(DEBUG) << "Finished";
                 return std::move(heightmap);
             }
         }
