@@ -1,7 +1,8 @@
 #include "world/generator/generator.h"
 #include <easylogging++.h>
-#include <list>
+#include <vector>
 #include <random>
+#include <limits>
 
 namespace Teamup {
     namespace World {
@@ -14,7 +15,7 @@ namespace Teamup {
              * @return the noise value
              */
             double generateNoise(const double x, const double y) {
-                return 0;
+                return x * y;
             }
 
             /**
@@ -62,6 +63,16 @@ namespace Teamup {
             Heightmap generateHeightmap(const GeneratorSettings& settings) {
                 Heightmap heightmap(settings.width, settings.height);
                 auto noiseMap = generateNoiseMap(settings.width, settings.height, 3, 0.4, 0.005);
+                
+                for (unsigned int x = 0; x < settings.width; ++x) {
+                    for (unsigned int y = 0; y < settings.height; ++y) {
+                        const double noiseValue = noiseMap[x][y];
+                        const short value = std::numeric_limits<unsigned short>::max() * noiseValue;
+
+                        heightmap.set(x, y, value);
+                    }
+                }
+
                 return std::move(heightmap);
             }
         }
