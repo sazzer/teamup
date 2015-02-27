@@ -20,7 +20,7 @@ PROJECT(Teamup CXX)
     #------------------------------------------------------------------------------
     ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp
         modules/teamup/main/world/generator/heightmap.cpp
-        modules/teamup/main/world/generator/generator.cpp)
+        modules/teamup/main/world/generator/perlin_generator.cpp)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/teamup/main)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/easyloggingpp/src)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CURSES_INCLUDE_DIRS})

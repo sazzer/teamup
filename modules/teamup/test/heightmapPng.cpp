@@ -12,8 +12,8 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
 int main(int argc, char** argv) {
     START_EASYLOGGINGPP(argc, argv);
     Teamup::World::Generator::GeneratorSettings settings {
-        .width = 8192,
-        .height = 8192
+        .width = 4096,
+        .height = 4096
     };
 
     Teamup::World::Generator::Heightmap heightmap = Teamup::World::Generator::generateHeightmap(settings);
@@ -80,16 +80,9 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
         }
     }
 
-    std::ofstream csv;
-    csv.open("/tmp/test.csv");
-
     for (int y = 0; y < heightmap.height(); ++y) {
         for (int x = 0; x < heightmap.width(); ++x) {
             short v = heightmap.get(x, y);
-            if (x > 0) {
-                csv << ",";
-            }
-            csv << v;
 
             if (v < 0) {
                 short cappedValue = std::max((short)(lowestDepth), v);
@@ -112,10 +105,8 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
                 VLOG(9) << "(" << x << ", " << y << ") = Land(" << v << ", " << (int)value << ")";
             }
         }
-        csv << std::endl;
         png_write_row(pngPtr, row);
     }
-    csv.close();
 
     delete[] row;
 
