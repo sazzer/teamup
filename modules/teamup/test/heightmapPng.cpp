@@ -66,7 +66,7 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
 
     png_byte* row = new png_byte[3 * heightmap.width()];
     const short WATER_LOW = 10000;
-    const short MOUNTAIN = 10000;
+    const short MOUNTAIN = 20000;
     const unsigned char MOUNTAIN_COLOUR_START = 192;
     const unsigned char LAND_COLOUR_START = 64;
 
@@ -82,7 +82,7 @@ int renderHeightmap(const std::string& filename, const Teamup::World::Generator:
 
     for (int y = 0; y < heightmap.height(); ++y) {
         for (int x = 0; x < heightmap.width(); ++x) {
-            short v = heightmap.get(x, y);
+            const short v = heightmap.get(x, y);
 
             if (v < 0) {
                 short cappedValue = std::max((short)(lowestDepth), v);
