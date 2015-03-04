@@ -1,5 +1,6 @@
 #include "noise/perlin.h"
 #include <easylogging++.h>
+#include <cmath>
 
 namespace Noise {
     /** The reference permutation array */
@@ -156,7 +157,7 @@ namespace Noise {
         const double ly2 = lerp(lx1y2, lx2y2, v);
         VLOG(9) << "LERPed values for Y2: (" << lx1y2 << ", " << lx2y2 << ") = " << ly2;
 
-        const double result = (lerp(ly1, ly2, w) + 1) / 2;
+        const double result = lerp(ly1, ly2, w);
         VLOG(9) << "Noise for (" << x << ", " << y << ", " << z << ") = " << result;
         return result;
     }
