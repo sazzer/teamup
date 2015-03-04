@@ -19,6 +19,8 @@ PROJECT(Teamup CXX)
     # The library that is the majority of the code
     #------------------------------------------------------------------------------
     ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp
+        modules/teamup/main/ui/ui.cpp
+        modules/teamup/main/ui/curses/curses.cpp
         modules/teamup/main/noise/perlin.cpp
         modules/teamup/main/world/generator/heightmap.cpp
         modules/teamup/main/world/generator/noise_generator.cpp)
