@@ -55,8 +55,7 @@ namespace Teamup {
 
             void Curses::createWindow(const std::string& name, const WindowBounds& bounds) {
                 if (pImpl->windows.find(name) == pImpl->windows.end()) {
-                    std::unique_ptr<Window> window(new Window);
-                    pImpl->windows[name].reset(new Window);
+                    pImpl->windows[name].reset(new Window(bounds));
                     LOG(DEBUG) << "Created new window: " << name;
                 }
             }

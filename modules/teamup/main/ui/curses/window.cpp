@@ -8,11 +8,11 @@ namespace Teamup {
                 WINDOW* window;
             };
 
-            Window::Window() : pImpl(new Impl) {
-                pImpl->window = newwin(10, // width
-                        10, // height
-                        0, // y
-                        0);// x
+            Window::Window(const WindowBounds& bounds) : pImpl(new Impl) {
+                pImpl->window = newwin(bounds.height,
+                        bounds.width,
+                        bounds.y,
+                        bounds.x);
             }
 
             Window::~Window() {

@@ -2,6 +2,7 @@
 #define TEAMUP_UI_CURSES_WINDOW_H
 
 #include <memory>
+#include "ui/curses/window_bounds.h"
 
 namespace Teamup {
     namespace UI {
@@ -15,7 +16,7 @@ namespace Teamup {
                 /**
                  * Construct the window
                  */
-                Window();
+                Window(const WindowBounds& bounds);
                 /**
                  * Destroy the window
                  */
