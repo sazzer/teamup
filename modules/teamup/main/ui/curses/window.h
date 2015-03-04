@@ -1,6 +1,8 @@
 #ifndef TEAMUP_UI_CURSES_WINDOW_H
 #define TEAMUP_UI_CURSES_WINDOW_H
 
+#include <memory>
+
 namespace Teamup {
     namespace UI {
         namespace Curses {
@@ -11,13 +13,23 @@ namespace Teamup {
             class Window {
             public:
                 /**
+                 * Construct the window
+                 */
+                Window();
+                /**
+                 * Destroy the window
+                 */
+                ~Window();
+                /**
                  * Render this window to the UI
                  */
-                void render() const {
-
-                }
+                void render() const;
             protected:
             private:
+                /** The internal implementation */
+                struct Impl;
+                /** The pImpl */
+                std::unique_ptr<Impl> pImpl;
             };
         }
     }

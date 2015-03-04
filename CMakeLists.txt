@@ -22,6 +22,7 @@ PROJECT(Teamup CXX)
         modules/teamup/main/ui/ui.cpp
         modules/teamup/main/ui/curses/curses.cpp
         modules/teamup/main/ui/curses/window_bounds.cpp
+        modules/teamup/main/ui/curses/window.cpp
         modules/teamup/main/noise/perlin.cpp
         modules/teamup/main/world/generator/heightmap.cpp
         modules/teamup/main/world/generator/noise_generator.cpp)

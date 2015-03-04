@@ -50,6 +50,7 @@ namespace Teamup {
                     VLOG(1) << "Rendering window: " << win.first;
                     win.second->render();
                 }
+                doupdate();
             }
 
             void Curses::createWindow(const std::string& name, const WindowBounds& bounds) {
