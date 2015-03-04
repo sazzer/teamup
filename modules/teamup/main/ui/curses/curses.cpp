@@ -1,11 +1,17 @@
 #include "ui/curses/curses.h"
 #include <easylogging++.h>
 #include <ncurses.h>
+#include <map>
+#include "ui/curses/window.h"
 
 namespace Teamup {
     namespace UI {
         namespace Curses {
-            Curses::Curses() {
+            struct Curses::Impl {
+                std::map<std::string, std::unique_ptr<Window> > windows;
+            };
+
+            Curses::Curses() : pImpl(new Impl) {
                 LOG(TRACE) << "Starting Curses";
                 initscr();
                 keypad(stdscr, TRUE);
@@ -37,6 +43,21 @@ namespace Teamup {
 
             unsigned int Curses::height() const {
                 return LINES;
+            }
+
+            void Curses::render() const {
+                for (const auto& win : pImpl->windows) {
+                    VLOG(1) << "Rendering window: " << win.first;
+                    win.second->render();
+                }
+            }
+
+            void Curses::createWindow(const std::string& name, const WindowBounds& bounds) {
+                if (pImpl->windows.find(name) == pImpl->windows.end()) {
+                    std::unique_ptr<Window> window(new Window);
+                    pImpl->windows[name].reset(new Window);
+                    LOG(DEBUG) << "Created new window: " << name;
+                }
             }
         }
     }

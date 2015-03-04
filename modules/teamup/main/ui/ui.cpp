@@ -52,6 +52,13 @@ namespace Teamup {
             LOG(DEBUG) << "Log Window Size: " << logWindowBounds;
             LOG(DEBUG) << "Quest Window Size: " << questWindowBounds;
             LOG(DEBUG) << "Character Window Size: " << charWindowBounds;
+
+            cursesUi->createWindow("map", mapWindowBounds);
+            cursesUi->createWindow("log", logWindowBounds);
+            cursesUi->createWindow("quest", questWindowBounds);
+            cursesUi->createWindow("character", charWindowBounds);
+
+            cursesUi->render();
         }
     }
 }

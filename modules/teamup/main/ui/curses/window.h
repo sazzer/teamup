@@ -9,7 +9,15 @@ namespace Teamup {
              * Representation of a Window on the Curses screen
              */
             class Window {
+            public:
+                /**
+                 * Render this window to the UI
+                 */
+                void render() const {
 
+                }
+            protected:
+            private:
             };
         }
     }

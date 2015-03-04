@@ -1,6 +1,9 @@
 #ifndef TEAMUP_UI_CURSES_CURSES_H
 #define TEAMUP_UI_CURSES_CURSES_H
 
+#include "ui/curses/window_bounds.h"
+#include <memory>
+
 namespace Teamup {
     namespace UI {
         namespace Curses {
@@ -27,8 +30,23 @@ namespace Teamup {
                  * @return The height of the UI
                  */
                 unsigned int height() const;
+
+                /**
+                 * Actually render the UI
+                 */
+                void render() const;
+                /**
+                 * Create a new window to render on the screen
+                 * @param name   The internal name of the window
+                 * @param bounds The bounds of the window
+                 */
+                void createWindow(const std::string& name, const WindowBounds& bounds);
             protected:
             private:
+                /** The internal implementation */
+                struct Impl;
+                /** The pImpl */
+                std::unique_ptr<Impl> pImpl;
             };
         }
     }
