@@ -25,6 +25,12 @@ namespace Teamup {
                  * Render this window to the UI
                  */
                 void render() const;
+
+                /**
+                 * Get the bounds of the window
+                 * @return the bounds
+                 */
+                const WindowBounds& bounds() const;
             protected:
             private:
                 /** The internal implementation */
