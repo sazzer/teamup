@@ -3,11 +3,12 @@
 
 #include <memory>
 #include "ui/curses/window_bounds.h"
+#include "ui/curses/window_renderer.h"
+#include <functional>
 
 namespace Teamup {
     namespace UI {
         namespace Curses {
-
             /**
              * Representation of a Window on the Curses screen
              */
@@ -15,8 +16,10 @@ namespace Teamup {
             public:
                 /**
                  * Construct the window
+                 * @param bounds The bounds of the window
+                 * @param renderer The functor to render the window contents
                  */
-                Window(const WindowBounds& bounds);
+                Window(const WindowBounds& bounds, std::function<void(const WindowRenderer&)> renderer);
                 /**
                  * Destroy the window
                  */

@@ -7,10 +7,12 @@ namespace Teamup {
             struct Window::Impl {
                 WINDOW* window;
                 WindowBounds bounds;
+                std::function<void(const WindowRenderer&)> renderer;
             };
 
-            Window::Window(const WindowBounds& bounds) : pImpl(new Impl) {
+            Window::Window(const WindowBounds& bounds, std::function<void(const WindowRenderer&)> renderer) : pImpl(new Impl) {
                 pImpl->bounds = bounds;
+                pImpl->renderer = renderer;
                 pImpl->window = newwin(bounds.height,
                         bounds.width,
                         bounds.y,
@@ -28,6 +30,9 @@ namespace Teamup {
             void Window::render() const {
                 wclear(pImpl->window);
                 wborder(pImpl->window, 0, 0, 0, 0, 0, 0, 0, 0);
+
+                WindowRenderer renderer;
+                pImpl->renderer(renderer);
                 wnoutrefresh(pImpl->window);
             }
         }

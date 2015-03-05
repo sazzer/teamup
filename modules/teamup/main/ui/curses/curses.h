@@ -2,6 +2,7 @@
 #define TEAMUP_UI_CURSES_CURSES_H
 
 #include "ui/curses/window_bounds.h"
+#include "ui/curses/window_renderer.h"
 #include <memory>
 
 namespace Teamup {
@@ -39,8 +40,9 @@ namespace Teamup {
                  * Create a new window to render on the screen
                  * @param name   The internal name of the window
                  * @param bounds The bounds of the window
+                 * @param renderer The renderer to use for the window
                  */
-                void createWindow(const std::string& name, const WindowBounds& bounds);
+                void createWindow(const std::string& name, const WindowBounds& bounds, std::function<void(const WindowRenderer&)> renderer);
             protected:
             private:
                 /** The internal implementation */

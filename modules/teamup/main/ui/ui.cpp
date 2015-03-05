@@ -16,7 +16,7 @@ namespace Teamup {
             const unsigned int width = cursesUi->width();
             LOG(DEBUG) << "UI size is " << width << " x " << height;
 
-            // For now we'll just hard-code some sizes. 
+            // For now we'll just hard-code some sizes.
             // TODO: Make these responsive
             const unsigned int logWindowHeight = 12;
             const unsigned int questWindowWidth = 22;
@@ -53,10 +53,10 @@ namespace Teamup {
             LOG(DEBUG) << "Quest Window Size: " << questWindowBounds;
             LOG(DEBUG) << "Character Window Size: " << charWindowBounds;
 
-            cursesUi->createWindow("map", mapWindowBounds);
-            cursesUi->createWindow("log", logWindowBounds);
-            cursesUi->createWindow("quest", questWindowBounds);
-            cursesUi->createWindow("character", charWindowBounds);
+            cursesUi->createWindow("map", mapWindowBounds, [](auto bounds){});
+            cursesUi->createWindow("log", logWindowBounds, [](auto bounds){});
+            cursesUi->createWindow("quest", questWindowBounds, [](auto bounds){});
+            cursesUi->createWindow("character", charWindowBounds, [](auto bounds){});
 
             cursesUi->render();
         }
