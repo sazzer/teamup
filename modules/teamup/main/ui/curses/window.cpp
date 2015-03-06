@@ -10,6 +10,49 @@ namespace Teamup {
                 std::function<void(WindowRenderer&)> renderer;
             };
 
+            /**
+             * Local implementation of the Window Renderer to use for rendering.
+             * Declaring a class here is a little weird, but it means that it can
+             * access the Impl object cleanly without anyone outside this file knowing.
+             */
+            class WindowRendererImpl : public WindowRenderer {
+            public:
+                /**
+                 * Construct the renderer
+                 * @param bounds The window bounds of the actual window
+                 * @param window The Curses Window pointer
+                 */
+                 WindowRendererImpl(const WindowBounds& bounds, WINDOW*& window) : bounds_ {
+                     .x = bounds.x + 1,
+                     .y = bounds.y + 1,
+                     .width = bounds.width - 2,
+                     .height = bounds.height - 2
+                 }, window_(window) {}
+
+                /**
+                 * Get the bounds of the window to render into
+                 * @return the bounds
+                 */
+                virtual const WindowBounds& bounds() const override {
+                    return bounds_;
+                }
+
+                /**
+                 * Render a simple string at the given location
+                 * @param x The X-Ordinate to render the string at
+                 * @param y The Y-Ordinate to render the string at
+                 * @param str The string to render
+                 */
+                virtual void renderString(const unsigned int x, const unsigned int y, const std::string& str) override {
+                    mvwprintw(window_, y + 1, x + 1, "%s", str.c_str());
+                }
+            protected:
+                /** The bounds of the window */
+                const WindowBounds bounds_;
+                /** The actual window */
+                WINDOW* window_;
+            };
+
             Window::Window(const WindowBounds& bounds, std::function<void(WindowRenderer&)> renderer) : pImpl(new Impl) {
                 pImpl->bounds = bounds;
                 pImpl->renderer = renderer;
@@ -28,49 +71,10 @@ namespace Teamup {
             }
 
             void Window::render() {
-                /**
-                 * Local implementation of the Window Renderer to use for rendering.
-                 * Declaring a class here is a little weird, but it means that it can
-                 * access the Impl object cleanly without anyone outside this file knowing.
-                 */
-                class WindowRendererImpl : public WindowRenderer {
-                public:
-                    /**
-                     * Construct the renderer
-                     * @param i The window implementation
-                     */
-                    WindowRendererImpl(Window::Impl& i) : impl(i) {}
-                    /**
-                     * Get the bounds of the window to render into
-                     * @return the bounds
-                     */
-                    virtual WindowBounds bounds() const override {
-                        return WindowBounds {
-                            .x = impl.bounds.x + 1,
-                            .y = impl.bounds.y + 1,
-                            .width = impl.bounds.width - 2,
-                            .height = impl.bounds.height - 2
-                        };
-                    }
-
-                    /**
-                     * Render a simple string at the given location
-                     * @param x The X-Ordinate to render the string at
-                     * @param y The Y-Ordinate to render the string at
-                     * @param str The string to render
-                     */
-                    virtual void renderString(const unsigned int x, const unsigned int y, const std::string& str) override {
-                        mvwprintw(impl.window, y + 1, x + 1, "%s", str.c_str());
-                    }
-                protected:
-                    /** The window implementation */
-                    Window::Impl& impl;
-                };
-
                 wclear(pImpl->window);
                 wborder(pImpl->window, 0, 0, 0, 0, 0, 0, 0, 0);
 
-                WindowRendererImpl renderer(*pImpl);
+                WindowRendererImpl renderer(pImpl->bounds, pImpl->window);
                 pImpl->renderer(renderer);
                 wnoutrefresh(pImpl->window);
             }

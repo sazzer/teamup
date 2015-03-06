@@ -15,7 +15,7 @@ namespace Teamup {
                  * Get the bounds of the window to render into
                  * @return the bounds
                  */
-                virtual WindowBounds bounds() const = 0;
+                virtual const WindowBounds& bounds() const = 0;
 
                 /**
                  * Render a simple string at the given location
