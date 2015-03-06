@@ -42,7 +42,7 @@ namespace Teamup {
                  * @param bounds The bounds of the window
                  * @param renderer The renderer to use for the window
                  */
-                void createWindow(const std::string& name, const WindowBounds& bounds, std::function<void(const WindowRenderer&)> renderer);
+                void createWindow(const std::string& name, const WindowBounds& bounds, std::function<void(WindowRenderer&)> renderer);
             protected:
             private:
                 /** The internal implementation */

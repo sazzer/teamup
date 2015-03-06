@@ -53,10 +53,12 @@ namespace Teamup {
             LOG(DEBUG) << "Quest Window Size: " << questWindowBounds;
             LOG(DEBUG) << "Character Window Size: " << charWindowBounds;
 
-            cursesUi->createWindow("map", mapWindowBounds, [](auto bounds){});
-            cursesUi->createWindow("log", logWindowBounds, [](auto bounds){});
-            cursesUi->createWindow("quest", questWindowBounds, [](auto bounds){});
-            cursesUi->createWindow("character", charWindowBounds, [](auto bounds){});
+            cursesUi->createWindow("map", mapWindowBounds, [](auto& renderer){});
+            cursesUi->createWindow("log", logWindowBounds, [](auto& renderer){
+                renderer.renderString(0, 0, "Hello, World");
+            });
+            cursesUi->createWindow("quest", questWindowBounds, [](auto& renderer){});
+            cursesUi->createWindow("character", charWindowBounds, [](auto& renderer){});
 
             cursesUi->render();
         }

@@ -19,7 +19,7 @@ namespace Teamup {
                  * @param bounds The bounds of the window
                  * @param renderer The functor to render the window contents
                  */
-                Window(const WindowBounds& bounds, std::function<void(const WindowRenderer&)> renderer);
+                Window(const WindowBounds& bounds, std::function<void(WindowRenderer&)> renderer);
                 /**
                  * Destroy the window
                  */
@@ -27,7 +27,7 @@ namespace Teamup {
                 /**
                  * Render this window to the UI
                  */
-                void render() const;
+                void render();
 
                 /**
                  * Get the bounds of the window
