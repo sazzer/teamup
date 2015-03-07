@@ -8,7 +8,10 @@ namespace Teamup {
             void LogWindow::operator()(Teamup::UI::WindowRenderer& renderer) {
                 const Teamup::Log::LogStore& logStore = Teamup::Flux::stores().getStore<Teamup::Log::LogStore>("log");
 
-                renderer.renderString(0, 0, "Hello, World");
+                const unsigned int count = logStore.count();
+                for (unsigned int i = 0; i < count; ++i) {
+                    renderer.renderString(0, i, logStore.message(i));
+                }
             }
         }
     }
