@@ -2,8 +2,8 @@
 #define TEAMUP_UI_CURSES_WINDOW_H
 
 #include <memory>
-#include "ui/curses/window_bounds.h"
-#include "ui/curses/window_renderer.h"
+#include "ui/window_bounds.h"
+#include "ui/window_renderer.h"
 #include <functional>
 
 namespace Teamup {

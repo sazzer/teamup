@@ -1,8 +1,8 @@
 #ifndef TEAMUP_UI_CURSES_CURSES_H
 #define TEAMUP_UI_CURSES_CURSES_H
 
-#include "ui/curses/window_bounds.h"
-#include "ui/curses/window_renderer.h"
+#include "ui/window_bounds.h"
+#include "ui/window_renderer.h"
 #include <memory>
 
 namespace Teamup {

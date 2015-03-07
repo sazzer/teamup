@@ -2,7 +2,7 @@
 #include <easylogging++.h>
 #include <memory>
 #include "ui/curses/curses.h"
-#include "ui/curses/window_bounds.h"
+#include "ui/window_bounds.h"
 
 namespace Teamup {
     namespace UI {
@@ -23,25 +23,25 @@ namespace Teamup {
             const unsigned int charWindowWidth = 22;
 
 
-            const Teamup::UI::Curses::WindowBounds mapWindowBounds {
+            const Teamup::UI::WindowBounds mapWindowBounds {
                 .x = charWindowWidth,
                 .y = 0,
                 .width = width - charWindowWidth - questWindowWidth,
                 .height = height - logWindowHeight
             };
-            const Teamup::UI::Curses::WindowBounds logWindowBounds {
+            const Teamup::UI::WindowBounds logWindowBounds {
                 .x = 0,
                 .y = mapWindowBounds.height,
                 .width = width,
                 .height = logWindowHeight
             };
-            const Teamup::UI::Curses::WindowBounds questWindowBounds {
+            const Teamup::UI::WindowBounds questWindowBounds {
                 .x = 0,
                 .y = 0,
                 .width = questWindowWidth,
                 .height = mapWindowBounds.height
             };
-            const Teamup::UI::Curses::WindowBounds charWindowBounds {
+            const Teamup::UI::WindowBounds charWindowBounds {
                 .x = mapWindowBounds.x + mapWindowBounds.width,
                 .y = 0,
                 .width = charWindowWidth,
