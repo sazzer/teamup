@@ -24,7 +24,10 @@ PROJECT(Teamup CXX)
     # The library that is the majority of the code
     #------------------------------------------------------------------------------
     ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp
-        modules/teamup/main/flux/stores.cpp
+        modules/teamup/main/flux/action.cpp
+        modules/teamup/main/flux/dispatcher.cpp
+        modules/teamup/main/log/logaction.cpp
+        modules/teamup/main/log/logstore.cpp
         modules/teamup/main/ui/ui.cpp
         modules/teamup/main/ui/curses/curses.cpp
         modules/teamup/main/ui/window_bounds.cpp

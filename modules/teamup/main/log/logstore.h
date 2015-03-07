@@ -1,29 +1,21 @@
 #ifndef TEAMUP_LOG_LOGSTORE_H
 #define TEAMUP_LOG_LOGSTORE_H
 
-#include <vector>
 #include <string>
 
 namespace Teamup {
     namespace Log {
         /**
-         * Flux Store for storing log messages
+         * Get the count of messages in the store
+         * @return the count of messages
          */
-        class LogStore {
-        public:
-            const unsigned int count() const {
-                return messages.size();
-            }
-            const std::string& message(const unsigned int i) const {
-                return messages[messages.size() - i - 1];
-            }
-            void add(const std::string message) {
-                messages.push_back(message);
-            }
-        protected:
-        private:
-            std::vector<std::string> messages;
-        };
+        unsigned int count();
+        /**
+         * Get a specific message from the store
+         * @param i The index of the message
+         * @return the message
+         */
+        const std::string& message(const unsigned int i);
     }
 }
 
