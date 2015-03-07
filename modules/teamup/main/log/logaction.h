@@ -20,6 +20,9 @@ namespace Teamup {
             LogAction(const std::string& message) : Action(NAME), message_(message) {
 
             }
+            const std::string message() const {
+                return message_;
+            }
         protected:
         private:
             /** The message to log */
