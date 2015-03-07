@@ -3,6 +3,7 @@
 #include <memory>
 #include "ui/curses/curses.h"
 #include "ui/window_bounds.h"
+#include "ui/windows/log.h"
 
 namespace Teamup {
     namespace UI {
@@ -53,10 +54,10 @@ namespace Teamup {
             LOG(DEBUG) << "Quest Window Size: " << questWindowBounds;
             LOG(DEBUG) << "Character Window Size: " << charWindowBounds;
 
+            Teamup::UI::Windows::LogWindow logWindowController;
+
             cursesUi->createWindow("map", mapWindowBounds, [](auto& renderer){});
-            cursesUi->createWindow("log", logWindowBounds, [](auto& renderer){
-                renderer.renderString(0, 0, "Hello, World");
-            });
+            cursesUi->createWindow("log", logWindowBounds, logWindowController);
             cursesUi->createWindow("quest", questWindowBounds, [](auto& renderer){});
             cursesUi->createWindow("character", charWindowBounds, [](auto& renderer){});
 
