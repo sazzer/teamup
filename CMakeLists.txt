@@ -15,10 +15,16 @@ PROJECT(Teamup CXX)
     FIND_PACKAGE(Curses)
     PKG_CHECK_MODULES(LIBPNG libpng)
 
+    SET(Boost_USE_STATIC_LIBS ON)
+    SET(Boost_USE_MULTITHREADED ON)
+    SET(Boost_USE_STATIC_RUNTIME ON)
+    FIND_PACKAGE(Boost 1.55.0 COMPONENTS system)
+
     #------------------------------------------------------------------------------
     # The library that is the majority of the code
     #------------------------------------------------------------------------------
     ADD_LIBRARY(TeamupLib STATIC modules/teamup/main/entry.cpp
+        modules/teamup/main/flux/stores.cpp
         modules/teamup/main/ui/ui.cpp
         modules/teamup/main/ui/curses/curses.cpp
         modules/teamup/main/ui/window_bounds.cpp
@@ -29,7 +35,9 @@ PROJECT(Teamup CXX)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/teamup/main)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/easyloggingpp/src)
     TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${CURSES_INCLUDE_DIRS})
+    TARGET_INCLUDE_DIRECTORIES(TeamupLib PUBLIC ${Boost_INCLUDE_DIRS})
     TARGET_LINK_LIBRARIES(TeamupLib ${CURSES_LIBRARIES})
+    TARGET_LINK_LIBRARIES(TeamupLib ${Boost_LIBRARIES})
 
     #------------------------------------------------------------------------------
     # The executable that ties it all together
