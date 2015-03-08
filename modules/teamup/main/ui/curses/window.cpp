@@ -23,8 +23,8 @@ namespace Teamup {
                  * @param window The Curses Window pointer
                  */
                  WindowRendererImpl(const WindowBounds& bounds, WINDOW*& window) : bounds_ {
-                     .x = bounds.x + 1,
-                     .y = bounds.y + 1,
+                     .x = 0,
+                     .y = 0,
                      .width = bounds.width - 2,
                      .height = bounds.height - 2
                  }, window_(window) {}
@@ -44,7 +44,10 @@ namespace Teamup {
                  * @param str The string to render
                  */
                 virtual void renderString(const unsigned int x, const unsigned int y, const std::string& str) override {
-                    mvwprintw(window_, y + 1, x + 1, "%s", str.c_str());
+                    // Ensure that we don't render off the bottom of the window
+                    if (y < bounds_.height) {
+                        mvwprintw(window_, y + 1, x + 1, "%s", str.c_str());
+                    }
                 }
             protected:
                 /** The bounds of the window */
