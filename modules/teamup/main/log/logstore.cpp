@@ -14,13 +14,11 @@ namespace Teamup {
             return messages[messages.size() - i - 1];
         }
 
-        // TODO: Change this from static registration
-        static bool registered = []() {
+        void registerStore() {
             Teamup::Flux::listen(Teamup::Log::LogAction::NAME, [](const auto& action) {
                 const Teamup::Log::LogAction& logAction = (const Teamup::Log::LogAction&)action;
                 messages.push_back(logAction.message());
             });
-            return true;
-        }();
+        }
     }
 }

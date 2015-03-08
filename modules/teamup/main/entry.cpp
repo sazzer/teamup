@@ -7,6 +7,8 @@
 namespace Teamup {
     void entry(const std::vector<std::string>& params) {
         LOG(INFO) << "Starting...";
+        Teamup::Log::registerStore();
+
         Teamup::Log::LogAction("One").dispatch();
         Teamup::Log::LogAction("Two").dispatch();
         Teamup::Log::LogAction("Three").dispatch();

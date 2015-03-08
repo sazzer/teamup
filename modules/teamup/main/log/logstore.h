@@ -16,6 +16,11 @@ namespace Teamup {
          * @return the message
          */
         const std::string& message(const unsigned int i);
+
+        /**
+         * Register the store with the dispatcher
+         */
+        void registerStore();
     }
 }
 
